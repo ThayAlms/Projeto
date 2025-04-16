@@ -47,6 +47,9 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 bool lastButtonStates[5] = {HIGH, HIGH, HIGH, HIGH, HIGH};
 bool currentButtonStates[5];
 
+// ----- Buzzer -----
+#define BUZZER_PIN 35
+
 // ----- EEPROM -----
 #define EEPROM_FLAG_ADDR 0
 #define EEPROM_CALIB_ADDR 1
@@ -60,6 +63,8 @@ void setup() {
   pinMode(BUTTON_REGISTER, INPUT_PULLUP);
   pinMode(BUTTON_LIVE, INPUT_PULLUP);
   pinMode(BUTTON_LIST, INPUT_PULLUP);
+  pinMode(BUZZER_PIN, OUTPUT);
+  digitalWrite(BUZZER_PIN, LOW);  // Garante que ele comece desligado
 
   // Iniciar LCD no barramento padrão
   Wire.begin(23, 22);
@@ -92,6 +97,7 @@ void setup() {
 
   lcd.setCursor(0, 0);
   lcd.print("Sistema Pronto");
+  beepBuzzer(2, 100);
   delay(2000);
   lcd.clear();
 
@@ -102,6 +108,7 @@ void loop() {
   // Checar teclado
   char tecla = keypad.getKey();
   if (tecla) {
+    beepBuzzer(1, 100);
     switch (tecla) {
       case 'A':
         cadastrarPeso();
@@ -138,6 +145,7 @@ void loop() {
     Serial.print("Peso: ");
     Serial.print(peso, 3);
     Serial.println(" kg");
+    beepBuzzer(1, 100);
   }
 
   if (lastButtonStates[1] == HIGH && currentButtonStates[1] == LOW) {
@@ -150,6 +158,7 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print("Tare aplicado");
     Serial.println("Tare aplicado");
+    beepBuzzer(1, 150);
     delay(2000);
     lcd.clear();
   }
@@ -183,6 +192,7 @@ void cadastrarPeso() {
   lcd.print(" kg");
   Serial.print("Peso cadastrado: ");
   Serial.println(peso, 3);
+  beepBuzzer(2, 100);
   delay(3000);
   lcd.clear();
 }
@@ -192,6 +202,7 @@ void listarPacientes() {
   lcd.setCursor(0,0);
   lcd.print("Listando...");
   Serial.println("Listar pacientes...");
+  beepBuzzer(1, 150);
   delay(3000);
   lcd.clear();
 }
@@ -201,6 +212,7 @@ void excluirPaciente() {
   lcd.setCursor(0,0);
   lcd.print("Excluindo...");
   Serial.println("Excluir paciente...");
+  beepBuzzer(3, 100);
   delay(3000);
   lcd.clear();
 }
@@ -210,6 +222,7 @@ void pausarSistema() {
   lcd.setCursor(0,0);
   lcd.print("Sistema Pausado");
   Serial.println("Sistema Pausado");
+  beepBuzzer(1, 500);
   delay(3000);
   lcd.clear();
 }
@@ -223,6 +236,7 @@ void calibrarBalanca() {
     delay(10);
   }
   scale.tare();
+  beepBuzzer(1, 200);
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Tare concluido");
@@ -236,6 +250,7 @@ void calibrarBalanca() {
     delay(10);
   }
   float leitura = scale.get_units(20);
+  beepBuzzer(1, 200);
 
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -258,11 +273,22 @@ void calibrarBalanca() {
     lcd.setCursor(0, 1);
     lcd.print("Fator:");
     lcd.print(calibration_factor, 2);
+    beepBuzzer(2, 150);
     delay(3000);
   } else {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Erro: valor 0");
+    beepBuzzer(3, 300);
     delay(2000);
+  }
+}
+
+void beepBuzzer(int vezes, int duracao) {
+  for (int i = 0; i < vezes; i++) {
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(duracao);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(100);
   }
 }
