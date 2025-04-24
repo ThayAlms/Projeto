@@ -48,26 +48,39 @@ EEPROM interna do ESP32
 
 Biblioteca Keypad, Adafruit_SSD1306, HX711, LiquidCrystal_I2C
 
-Componente | Pino ESP32
-LCD SDA | 23
-LCD SCL | 22
-OLED SDA | 12
-OLED SCL | 14
-HX711 DT | 15
-HX711 SCK | 2
-Botão Tare | 25
-Botão Calibrar | 27
-Botão Registrar | 32
-Botão Peso Atual | 34
-Buzzer | 35
-Keypad R1 | 21
-Keypad R2 | 19
-Keypad R3 | 18
-Keypad R4 | 5
-Keypad C1 | 17
-Keypad C2 | 16
-Keypad C3 | 4
-Keypad C4 | 0
+### 🔌 Conexões Físicas
+
+#### 🧠 ESP32
+
+| Componente            | Pino ESP32 |
+|-----------------------|------------|
+| **LCD I2C (Display 16x2)** |        |
+| SDA                   | 23         |
+| SCL                   | 22         |
+| **OLED I2C (Menu)**   |            |
+| SDA                   | 12         |
+| SCL                   | 14         |
+| **HX711 (Célula de Carga)** |       |
+| DT                    | 15         |
+| SCK                   | 2          |
+| **Botões**            |            |
+| Tare                  | 25         |
+| Calibrar              | 27         |
+| Registrar Peso        | 32         |
+| Mostrar Peso Atual    | 34         |
+| **Buzzer**            | 35         |
+| **Teclado 4x4**       |            |
+| R1                    | 21         |
+| R2                    | 19         |
+| R3                    | 18         |
+| R4                    | 5          |
+| C1                    | 17         |
+| C2                    | 16         |
+| C3                    | 4          |
+| C4                    | 0          |
+
+> 💡 **Nota:** O LCD e o OLED utilizam barramentos I2C separados para evitar conflitos. O segundo barramento I2C é configurado via `TwoWire WireMenu`.
+
 
 
 ![image](https://github.com/user-attachments/assets/8a640b97-414d-4c2d-bda7-4850630d30df)
