@@ -6,9 +6,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <HX711.h>
 #include <EEPROM.h>
-
-#define SDA_PIN 23
-#define SCL_PIN 22
+x
 
 #define DT 15
 #define SCK 2
